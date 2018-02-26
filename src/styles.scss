@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+html {
+  font-size: 62.5%;
+}
+
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+body > app-root {
+  height: 100%;
+}
