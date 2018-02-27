@@ -5,11 +5,13 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {StateService} from "./state.service";
 import {EngineService} from "./engine.service";
+import { MainSceneComponent } from './main-scene/main-scene.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MainSceneComponent
   ],
   imports: [
     BrowserModule

@@ -1,27 +1,21 @@
 .main-container {
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 8% 84% 8%;
+  grid-template-columns: repeat(2, 1fr) 802px repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr) 602px repeat(2, 1fr);
 }
 
 .main-container {
   >header,>footer {
     grid-column: span 12;
+    grid-row: span 2;
   }
   >nav,>aside {
-    grid-column: span 1;
-  }
-  >main {
-    grid-column: span 10;
+    grid-column: span 2;
   }
 }
 
 .main-container > * {
   border: 1px solid red;
   box-sizing: border-box;
-}
-
-.main-container > * > * {
-  border: 1px solid blue;
 }
