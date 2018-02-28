@@ -1,21 +1,27 @@
 .main-container {
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr) 802px repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr) 602px repeat(2, 1fr);
+  grid-template-columns: minmax(40rem, 1fr) max-content minmax(40rem, 1fr);
+  grid-template-rows: minmax(15rem, 1fr) max-content minmax(7rem, 1fr);
 }
 
 .main-container {
   >header,>footer {
-    grid-column: span 12;
-    grid-row: span 2;
+    grid-column: span 11;
+    grid-row: span 1;
   }
   >nav,>aside {
-    grid-column: span 2;
+    grid-column: span 1;
+    display: grid;
+    grid-gap: 5px;
+    padding: 5px;
   }
-}
 
-.main-container > * {
-  border: 1px solid red;
-  box-sizing: border-box;
+  >nav,>aside {
+    grid-template: repeat(8, 1fr) / repeat(5, 1fr)
+  }
+
+  >nav>div,>aside>div {
+    border: 1px solid green;
+  }
 }
