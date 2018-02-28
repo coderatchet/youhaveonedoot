@@ -4,16 +4,16 @@ import {Primitive, SafeNestedMap} from "./types";
 @Injectable()
 export class StateService {
 
-  states: SafeNestedMap = new SafeNestedMap();
+  private states: SafeNestedMap = new SafeNestedMap();
 
   constructor() {
   }
 
   getState(path: string): any {
-    // return this.states.resolvePath(path, true);
+    return this.states.get(path);
   }
 
   setState(path: string, value: Primitive) {
-    // return this.states.set(path, value);
+    this.states.set(path, value);
   }
 }
