@@ -10,9 +10,11 @@ export class AppComponent implements OnInit {
   title = 'app';
 
   constructor(private engineService: EngineService) {
+    console.log("constructing App component.");
   }
 
   ngOnInit(): void {
+    console.log("init App component.");
     this.engineService.start();
   }
 }

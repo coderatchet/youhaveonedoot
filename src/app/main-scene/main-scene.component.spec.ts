@@ -1,6 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MainSceneComponent } from './main-scene.component';
+import {MainSceneComponent} from './main-scene.component';
+import {DefaultSpys} from "../../test/mocks";
+import {GameWorldService} from "../game-world.service";
+import {SystemsService} from "../ecs/systems.service";
 
 describe('MainSceneComponent', () => {
   let component: MainSceneComponent;
@@ -8,9 +11,13 @@ describe('MainSceneComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MainSceneComponent ]
+      providers: [
+        {provide: GameWorldService, useValue: DefaultSpys.gameWorldService},
+        {provide: SystemsService, useValue: DefaultSpys.systemsService},
+      ],
+      declarations: [MainSceneComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

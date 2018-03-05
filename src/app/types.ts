@@ -1,4 +1,8 @@
+import {ThingType} from "./unit-type";
+import {Saveable} from "./saveable";
+
 export type Primitive = string | number | boolean | null;
+export type ValidMapValue = Primitive | Primitive[] | SafeNestedMap;
 
 export class NestedTypeError extends TypeError {
   constructor(public key: string) {
@@ -6,12 +10,12 @@ export class NestedTypeError extends TypeError {
   }
 }
 
-export class SafeNestedMap {
+export class SafeNestedMap implements Saveable<SafeNestedMap> {
 
-  private _instance: Map<string, Primitive | SafeNestedMap>;
+  private _instance: Map<string, ValidMapValue>;
 
   constructor(entries?: [string, Primitive | SafeNestedMap][]) {
-    this._instance = new Map<string, Primitive | SafeNestedMap>(entries);
+    this._instance = new Map<string, ValidMapValue>(entries);
   }
 
   /**
@@ -49,7 +53,7 @@ export class SafeNestedMap {
     return map;
   }
 
-  get(key: string): Primitive | SafeNestedMap {
+  get(key: string): ValidMapValue {
     if (SafeNestedMap._validPath(key)) {
       return this._get(key);
     } else {
@@ -57,9 +61,9 @@ export class SafeNestedMap {
     }
   }
 
-  private _get(key: string): Primitive | SafeNestedMap {
+  private _get(key: string): ValidMapValue {
     const indexOfLastDot = key.lastIndexOf('.');
-    if(indexOfLastDot > -1) {
+    if (indexOfLastDot > -1) {
       const mapKey = key.slice(0, indexOfLastDot);
       const valueKey = key.slice(indexOfLastDot + 1);
       return this.getOrCreateMap(mapKey).get(valueKey);
@@ -68,7 +72,7 @@ export class SafeNestedMap {
     }
   }
 
-  set(key: string, value: Primitive | SafeNestedMap): this {
+  set(key: string, value: ValidMapValue): this {
     if (SafeNestedMap._validPath(key)) {
       return this._set(key, value);
     } else {
@@ -82,7 +86,7 @@ export class SafeNestedMap {
    * @param {Primitive | SafeNestedMap} value
    * @private
    */
-  private _set(key: string, value: Primitive | SafeNestedMap): this {
+  private _set(key: string, value: ValidMapValue): this {
     const indexOfLastDot = key.lastIndexOf('.');
     if (indexOfLastDot < 0) {
       this._instance.set(key, value);
@@ -98,4 +102,16 @@ export class SafeNestedMap {
   private static _validPath(key: string): boolean {
     return !!key.match(/^(?:[A-Za-z_][A-Za-z0-9_]*\.)*[A-Za-z_][A-Za-z0-9_]*$/g);
   }
+
+  load(s: string): SafeNestedMap {
+    return undefined;
+  }
+
+  save(): string {
+    return "";
+  }
+}
+
+export class Cost {
+  constructor(public thing: ThingType, public price: number) {}
 }
