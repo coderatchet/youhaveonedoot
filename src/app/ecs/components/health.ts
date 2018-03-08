@@ -1,11 +1,11 @@
 import {Component} from "../Component";
+import {SortedSet} from "collections/sorted-set"
 
 export class Health extends Component {
-  public static name: string = "health";
-
   constructor(public health?: number) {
+    super();
     this.health = health ? health : 100.0;
   }
 }
 
-Component.all[Health.name] = new Set<>();
+Component.all[Health.name] = new SortedSet();

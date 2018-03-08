@@ -1,10 +1,10 @@
 import {Component} from "../Component";
+import {SortedSet} from "collections/sorted-set"
 
 export class Position extends Component {
-  public static name: string = "position";
-
   constructor(public x: number, public y: number) {
+    super();
   }
 }
 
-Component.all[Position.name] = new Set<>();
+Component.all[Position.name] = new SortedSet();

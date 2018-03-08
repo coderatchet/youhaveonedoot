@@ -1,34 +1,36 @@
 import {Component} from "./Component";
 
 export class Entity {
-  private static readonly _count = 0;
+  private static _count: number = 0;
   public id: number/* = (+new Date()).toString(16) + (Math.random() * 100000000 | 0).toString(16) +  this._count */;
-  public components: Component[] = [];
+  public components: Map<string, Component> = new Map();
 
   constructor() {
-    this.id = this._count++;
+    this.id = Entity._count++;
   }
 
   addComponent(component: Component): this {
-    this.components[component.name] = component;
+    this.components[component.constructor.name] = component;
     // add the entity to the list of entities with this component.
-    Component.all[component.name].add(this.id);
+    Component.all[component.constructor.name].add(this.id);
     return this;
   }
 
   removeComponent(componentName: string | Function): this {
-    let name = componentName;
-    if (typeof name === 'function') {
-      name = componentName.name
+    let name: string;
+    if (typeof componentName === 'function') {
+      name = componentName.name;
+    } else {
+      name = componentName;
     }
     // remove the entity from the list of entities with this component.
     Component.all[name].delete(this.id);
+    this.components.delete(name);
     return this;
   }
 
-  print(): this {
+  toString(): string {
     // Function to print / log information about the entity
-    console.log(JSON.stringify(this, null, 2));
-    return this;
+    return JSON.stringify(this, null, 2);
   };
 }
