@@ -5,12 +5,15 @@ import {System} from "./ecs/system";
 import {EntityService} from "./ecs/entity.service";
 import {Entity} from "./ecs/Entity";
 import {GameWorldService} from "./game-world.service";
+import {FrameData} from "./frame-data";
 
 @Injectable()
 export class EngineService {
 
   frameCount: number = 0;
   currentPendingFrame: number = -1;
+  private lastTFrame: number = 0;
+  private currentFrameData: FrameData = null;
 
   constructor(private systemsService: SystemsService, private entityService: EntityService, private gameWorldService: GameWorldService) {
   }
@@ -27,13 +30,15 @@ export class EngineService {
   private gameLoop(tFrame?: number) {
     this.currentPendingFrame = window.requestAnimationFrame(this.gameLoop.bind(this));
     this.frameCount++;
+    this.currentFrameData = new FrameData(this.lastTFrame, tFrame);
+    this.lastTFrame = tFrame;
     this.callSystems();
   }
 
   private callSystems() {
     this.systemsService.systems.forEach(
       (s: System) => {
-        s.process(this.entityService.all())
+        s.process(this.currentFrameData, this.entityService.all());
       });
   }
 

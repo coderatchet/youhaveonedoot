@@ -1,6 +1,8 @@
 import {Entity} from "./Entity";
+import {FrameData} from "../frame-data";
 
 export interface System {
-  process(entries: Entity[]): void
+  process(frameData: FrameData, entries: Iterator<Entity>): void
+
   components(): string[]
 }

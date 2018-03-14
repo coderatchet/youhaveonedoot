@@ -3,6 +3,7 @@ import {SortedSet} from "collections/sorted-set"
 
 export class GrowingQuantity extends Component {
   public quantity: number;
+  readonly ratePerSecond: number;
 
   constructor(private initialQuantity?: number) {
     super();

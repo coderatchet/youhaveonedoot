@@ -29,6 +29,20 @@ export class Entity {
     return this;
   }
 
+  getComponent(componentName: string | Function): Component {
+    let name: string;
+    if (typeof componentName === 'function') {
+      name = componentName.name;
+    } else {
+      name = componentName;
+    }
+    return this.components.get(name);
+  }
+
+  hasComponent(componentName: string | Function): boolean {
+    return !!this.getComponent(componentName);
+  }
+
   toString(): string {
     // Function to print / log information about the entity
     return JSON.stringify(this, null, 2);
