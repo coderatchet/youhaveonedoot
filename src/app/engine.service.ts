@@ -20,6 +20,7 @@ export class EngineService {
   }
 
   public start() {
+    console.debug("starting world");
     this.gameWorldService.initWorld();
     this.gameLoop();
   }

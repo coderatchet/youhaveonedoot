@@ -22,7 +22,8 @@ export class Growth implements System {
       let result: IteratorResult<GrowingQuantity> = itr.next();
       while (!result.done) {
         let gq = result.value;
-        gq.quantity += gq.ratePerSecond;
+        // gq.quantity += gq.ratePerSecond;
+        gq.quantity += 1;
         console.log(gq.quantity);
       }
       this.lastUpdate = frameData.currentTFrame;

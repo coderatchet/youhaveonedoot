@@ -26,6 +26,8 @@ export class EntityService {
     }
   }
 
-  constructor() {}
+  constructor() {
+    console.debug("construct entity service");
+  }
 
 }

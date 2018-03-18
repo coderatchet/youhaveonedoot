@@ -8,7 +8,7 @@ import {SystemsService} from "./ecs/systems.service";
 @Injectable()
 export class GameWorldService {
 
-  private _doots = new Entity('doots').addComponent(new GrowingQuantity(0));
+  private _doots = new Entity('doots')/*.addComponent(new GrowingQuantity(0))*/;
 
   constructor(private stateService: StateService,
               private entityService: EntityService,
@@ -20,8 +20,11 @@ export class GameWorldService {
    * main entry point for game initialization. populate the entities
    */
   public initWorld() {
+    console.log(GrowingQuantity);
+    let comp = new GrowingQuantity(0);
+    // this._doots.addComponent(comp);
     console.debug("init GameWorldService");
-    this.entityService.add(this._doots);
+    // this.entityService.add(this._doots);
   }
 
 }
