@@ -10,11 +10,10 @@ import {SystemsService} from "./ecs/systems.service";
 import {GameWorldService} from "./game-world.service";
 import {EntityService} from "./ecs/entity.service";
 
-
 @NgModule({
   declarations: [
-    AppComponent,
-    MainSceneComponent
+    MainSceneComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule
@@ -26,7 +25,10 @@ import {EntityService} from "./ecs/entity.service";
     GameWorldService,
     EntityService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    MainSceneComponent,
+    AppComponent
+  ]
 })
 export class AppModule {
 }

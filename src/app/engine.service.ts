@@ -16,6 +16,7 @@ export class EngineService {
   private currentFrameData: FrameData = null;
 
   constructor(private systemsService: SystemsService, private entityService: EntityService, private gameWorldService: GameWorldService) {
+    console.debug("constructing EngineService");
   }
 
   public start() {

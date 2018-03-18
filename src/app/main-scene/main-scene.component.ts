@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainSceneComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    console.log("constructing Main Scene component.");
+  }
 
   ngOnInit() {
+    console.log("init Main Scene component");
   }
 
 }

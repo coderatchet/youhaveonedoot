@@ -2,8 +2,10 @@ import {System} from "../system";
 import {Entity} from "../Entity";
 import {FrameData} from "../../frame-data";
 import {GrowingQuantity} from "../components/growingQuantity";
+import {IteratorUtils} from "../../IteratorUtils";
 
 export class Growth implements System {
+
   private lastUpdate: number = 0;
 
   /**
@@ -12,12 +14,18 @@ export class Growth implements System {
    */
   private updateInterval: number = 1000;
 
-  process(frameData: FrameData, entries: Iterator<Entity>): void {
+  process(frameData: FrameData, entries: IterableIterator<Entity>): void {
     let lastupdateSeconds: number = frameData.currentTFrame - this.lastUpdate;
     if(lastupdateSeconds > 1000) {
-      entries.map(item => item.getComponent(GrowingQuantity)).filter(x => !!x).forEach(entity => {
-
-      });
+      let itr = IteratorUtils.nonNullIterator(
+        IteratorUtils.mapIterator(entries, item => item.getComponent(GrowingQuantity)));
+      let result: IteratorResult<GrowingQuantity> = itr.next();
+      while (!result.done) {
+        let gq = result.value;
+        gq.quantity += gq.ratePerSecond;
+        console.log(gq.quantity);
+      }
+      this.lastUpdate = frameData.currentTFrame;
     }
   }
 
