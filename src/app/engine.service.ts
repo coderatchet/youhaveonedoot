@@ -34,15 +34,24 @@ export class EngineService {
     this.frameCount++;
     this.currentFrameData = new FrameData(this.lastTFrame, tFrame);
     this.lastTFrame = tFrame;
+    this.doBeforeSystemLogger();
     this.callSystems();
+    this.doAfterSystemLogger();
+  }
+
+  private doBeforeSystemLogger() {
+
   }
 
   private callSystems() {
     this.systemsService.systems.forEach(
       (s: System) => {
-        // console.debug(`calling system: ${s.constructor.name}`);
         s.process(this.currentFrameData, this.entityService.all());
       });
+  }
+
+  private doAfterSystemLogger() {
+
   }
 
   public stop() {
