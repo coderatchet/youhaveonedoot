@@ -11,11 +11,11 @@ export class EntityService {
   }
 
   public get(id: number): Entity {
-    return this.entities[id];
+    return this.entities.get(id);
   }
 
   public add(e: Entity) {
-    this.entities[e.id] = e;
+    this.entities.set(e.id, e);
   }
 
   public remove(e: number | Entity) {

@@ -16,15 +16,18 @@ export class Growth implements System {
 
   process(frameData: FrameData, entries: IterableIterator<Entity>): void {
     let lastupdateSeconds: number = frameData.currentTFrame - this.lastUpdate;
+    console.debug(frameData);
     if(lastupdateSeconds > 1000) {
+      console.debug(`lastUpdateSeconds = ${lastupdateSeconds}`);
       let itr = IteratorUtils.nonNullIterator(
         IteratorUtils.mapIterator(entries, item => item.getComponent(GrowingQuantity)));
       let result: IteratorResult<GrowingQuantity> = itr.next();
+      console.debug(entries);
       while (!result.done) {
         let gq = result.value;
         // gq.quantity += gq.ratePerSecond;
         gq.quantity += 1;
-        console.log(gq.quantity);
+        console.debug(gq.quantity);
       }
       this.lastUpdate = frameData.currentTFrame;
     }

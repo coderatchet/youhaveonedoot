@@ -40,6 +40,7 @@ export class EngineService {
   private callSystems() {
     this.systemsService.systems.forEach(
       (s: System) => {
+        // console.debug(`calling system: ${s.constructor.name}`);
         s.process(this.currentFrameData, this.entityService.all());
       });
   }

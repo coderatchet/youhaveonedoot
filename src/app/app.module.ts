@@ -20,7 +20,7 @@ import {EntityService} from "./ecs/entity.service";
   ],
   providers: [
     StateService,
-    // EngineService,
+    EngineService,
     SystemsService,
     GameWorldService,
     EntityService

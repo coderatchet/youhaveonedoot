@@ -1,9 +1,9 @@
 import {Component} from "../Component";
-import {SortedSet} from "collections/sorted-set"
 
 export class GrowingQuantity extends Component {
   public quantity: number;
-  // readonly ratePerSecond: number = 1;
+
+  readonly ratePerSecond: number = 1;
 
   constructor(private initialQuantity?: number) {
     super();
@@ -11,4 +11,4 @@ export class GrowingQuantity extends Component {
   }
 }
 
-Component.all[GrowingQuantity.name] = new SortedSet();
+Component.all.set(GrowingQuantity.name, new Set());

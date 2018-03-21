@@ -14,7 +14,7 @@ export class Entity {
   addComponent(component: Component): this {
     this.components[component.constructor.name] = component;
     // add the entity to the list of entities with this component.
-    Component.all[component.constructor.name].add(this.id);
+    Component.all.get(component.constructor.name).add(this.id);
     return this;
   }
 
@@ -26,7 +26,7 @@ export class Entity {
       name = componentName;
     }
     // remove the entity from the list of entities with this component.
-    Component.all[name].delete(this.id);
+    Component.all.get(name).delete(this.id);
     this.components.delete(name);
     return this;
   }

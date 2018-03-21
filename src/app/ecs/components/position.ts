@@ -1,5 +1,4 @@
 import {Component} from "../Component";
-import {SortedSet} from "collections/sorted-set"
 
 export class Position extends Component {
   constructor(public x: number, public y: number) {
@@ -7,4 +6,4 @@ export class Position extends Component {
   }
 }
 
-Component.all[Position.name] = new SortedSet();
+Component.all.set(Position.name, new Set());

@@ -4,6 +4,8 @@ export class FrameData {
   public readonly timeSinceLastTFrame: number;
 
   constructor(lastTFrame: number, currentTFrame: number) {
+    this.lastTFrame = lastTFrame;
+    this.currentTFrame = currentTFrame;
     this.timeSinceLastTFrame = currentTFrame - lastTFrame;
   }
 }

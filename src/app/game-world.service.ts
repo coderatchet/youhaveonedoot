@@ -4,6 +4,7 @@ import {EntityService} from "./ecs/entity.service";
 import {Entity} from "./ecs/Entity";
 import {GrowingQuantity} from "./ecs/components/growingQuantity";
 import {SystemsService} from "./ecs/systems.service";
+import {Growth} from "./ecs/systems/growth";
 
 @Injectable()
 export class GameWorldService {
@@ -20,11 +21,17 @@ export class GameWorldService {
    * main entry point for game initialization. populate the entities
    */
   public initWorld() {
-    console.log(GrowingQuantity);
+    this.createSystems();
     let comp = new GrowingQuantity(0);
-    // this._doots.addComponent(comp);
+    this._doots.addComponent(comp);
     console.debug("init GameWorldService");
-    // this.entityService.add(this._doots);
+    this.entityService.add(this._doots);
+  }
+
+  private createSystems() {
+    this.systemService.systems = [
+      new Growth()
+    ];
   }
 
 }
