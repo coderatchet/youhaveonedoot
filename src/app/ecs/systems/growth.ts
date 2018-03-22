@@ -16,21 +16,24 @@ export class Growth implements System {
 
   process(frameData: FrameData, entries: IterableIterator<Entity>): void {
     let lastupdateSeconds: number = frameData.currentTFrame - this.lastUpdate;
-
-    if (Math.floor(frameData.currentTFrame) % 123 === 0) {
-      console.debug(`lastUpdate: ${this.lastUpdate}`);
-      console.debug(`currentTFrame: ${frameData.currentTFrame}`);
-      console.debug(`lastUpdateSeconds: ${lastupdateSeconds}`);
-    }
-    if(lastupdateSeconds > 1000) {
+    if(lastupdateSeconds > this.updateInterval) {
+      // console.debug("growth...");
       let itr = IteratorUtils.nonNullIterator(
         IteratorUtils.mapIterator(entries, item => item.getComponent(GrowingQuantity)));
-      let result: IteratorResult<GrowingQuantity> = itr.next();
+      let result: IteratorResult<Entity> = entries.next();
       // console.debug(entries);
+      // console.debug("entity");
+      // console.debug(result);
       while (!result.done) {
-        let gq = result.value;
+        let entity: Entity = result.value;
+        if(entity.hasComponent(GrowingQuantity)) {
+          let gq: GrowingQuantity = entity.getComponent(GrowingQuantity) as GrowingQuantity;
+          // console.debug("quantity: " + gq.quantity);
+          // console.debug("rate: " + gq.ratePerSecond);
+          gq.quantity += gq.ratePerSecond;
+        }
+
         // console.debug(gq);
-        // gq.quantity += gq.ratePerSecond;
         // gq.quantity += 1;
         // console.debug(gq.quantity);
         result = itr.next();

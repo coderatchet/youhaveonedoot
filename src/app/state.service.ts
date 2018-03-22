@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Primitive, SafeNestedMap} from "./types";
+import {Primitive, SafeNestedMap, ValidMapValue} from "./types";
 
 @Injectable()
 export class StateService {
@@ -9,11 +9,11 @@ export class StateService {
   constructor() {
   }
 
-  getState(path: string): any {
+  getState(path: string): ValidMapValue {
     return this.states.get(path);
   }
 
-  setState(path: string, value: Primitive) {
+  setState(path: string, value: Primitive | Function | Primitive[]) {
     this.states.set(path, value);
   }
 }

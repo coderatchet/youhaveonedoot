@@ -4,7 +4,7 @@ export class Entity {
   private static _count: number = 0;
   public id: number/* = (+new Date()).toString(16) + (Math.random() * 100000000 | 0).toString(16) +  this._count */;
   public name: string;
-  public components: Map<string, Component> = new Map();
+  public components: Map<string, Component> = new Map<string, Component>();
 
   constructor(name? : string) {
     this.id = Entity._count++;
@@ -12,7 +12,7 @@ export class Entity {
   }
 
   addComponent(component: Component): this {
-    this.components[component.constructor.name] = component;
+    this.components.set(component.constructor.name, component);
     // add the entity to the list of entities with this component.
     Component.all.get(component.constructor.name).add(this.id);
     return this;

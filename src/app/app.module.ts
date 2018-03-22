@@ -9,6 +9,8 @@ import {MainSceneComponent} from './main-scene/main-scene.component';
 import {SystemsService} from "./ecs/systems.service";
 import {GameWorldService} from "./game-world.service";
 import {EntityService} from "./ecs/entity.service";
+import {NumberDisplayService} from "./number-display.service";
+import {RenderingService} from "./ecs/rendering.service";
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import {EntityService} from "./ecs/entity.service";
     EngineService,
     SystemsService,
     GameWorldService,
-    EntityService
+    EntityService,
+    RenderingService,
+    NumberDisplayService
   ],
   bootstrap: [
     AppComponent

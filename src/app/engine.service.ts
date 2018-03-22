@@ -31,8 +31,7 @@ export class EngineService {
    */
   private gameLoop(tFrame?: number) {
     this.currentPendingFrame = window.requestAnimationFrame(this.gameLoop.bind(this));
-    this.frameCount++;
-    this.currentFrameData = new FrameData(this.lastTFrame, tFrame);
+    this.currentFrameData = new FrameData(this.lastTFrame, tFrame, this.frameCount++);
     this.lastTFrame = tFrame;
     this.doBeforeSystemLogger();
     this.callSystems();
