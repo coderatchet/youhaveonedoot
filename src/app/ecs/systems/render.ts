@@ -2,7 +2,6 @@ import {System} from "../system";
 import {FrameData} from "../../frame-data";
 import {Entity} from "../Entity";
 import {Renderable2D} from "../components/Renderable2D";
-import {MainSceneComponent} from "../../main-scene/main-scene.component";
 
 export class Render implements System {
 
@@ -14,7 +13,12 @@ export class Render implements System {
   private lastFrameUpdated: number = 0;
 
   process(frameData: FrameData, entries: Iterator<Entity>): void {
-    Render.getContext2D().clearRect(0, 0, MainSceneComponent.canvasWidth, MainSceneComponent.canvasHeight);
+    let canvas = Render.getCanvas();
+    Render.getContext2D().clearRect(0, 0, canvas.width, canvas.height);
+    if(frameData.currentFrame % 100 === 0) {
+      console.debug(frameData);
+      console.debug(entries);
+    }
     if (frameData.currentFrame - this.lastFrameUpdated === this.updateInterval) {
       let result: IteratorResult<Entity> = entries.next();
       while (!result.done) {
@@ -38,7 +42,7 @@ export class Render implements System {
   }
 
   private static getCanvas(): HTMLCanvasElement {
-    return document.getElementById(MainSceneComponent.canvasId) as HTMLCanvasElement;
+    return document.getElementById("mainScene") as HTMLCanvasElement;
   }
 
 }

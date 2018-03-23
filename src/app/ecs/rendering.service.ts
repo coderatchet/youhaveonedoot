@@ -5,9 +5,15 @@ import {GrowingQuantity} from "./components/growingQuantity";
 import {Position} from "./components/position";
 import {NumberDisplayService} from "../number-display.service";
 import {DrawFunction} from "./components/Renderable2D";
+import {ILiteEvent, LiteEvent} from "../lite-event";
 
 @Injectable()
-export class RenderingService implements OnInit {
+export class RenderingService {
+
+  private _onInit = new LiteEvent<void>();
+
+  public get onInitEvent(): ILiteEvent<void> { return this._onInit.expose(); }
+
   constructor(private stateService: StateService, private numberDisplayService: NumberDisplayService) {
   }
 
@@ -15,7 +21,7 @@ export class RenderingService implements OnInit {
     return this.stateService.getState("rendering.number") as DrawFunction
   }
 
-  ngOnInit(): void {
+  public init(): void {
     this.stateService.setState("rendering.number", (ctx: CanvasRenderingContext2D, entity: Entity) => {
       let gq: GrowingQuantity = entity.getComponent(GrowingQuantity) as GrowingQuantity;
       let position: Position = entity.getComponent(Position) as Position;
@@ -27,6 +33,7 @@ export class RenderingService implements OnInit {
       ctx.font = "20px Georgia";
       ctx.fillText(this.numberDisplayService.displayNumber(gq.quantity), position.x, position.y);
     });
+    this._onInit.trigger();
   }
 
 }
