@@ -15,10 +15,6 @@ export class Render implements System {
   process(frameData: FrameData, entries: Iterator<Entity>): void {
     let canvas = Render.getCanvas();
     Render.getContext2D().clearRect(0, 0, canvas.width, canvas.height);
-    if(frameData.currentFrame % 100 === 0) {
-      console.debug(frameData);
-      console.debug(entries);
-    }
     if (frameData.currentFrame - this.lastFrameUpdated === this.updateInterval) {
       let result: IteratorResult<Entity> = entries.next();
       while (!result.done) {
