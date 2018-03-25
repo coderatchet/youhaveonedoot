@@ -11,11 +11,16 @@ import {GameWorldService} from "./game-world.service";
 import {EntityService} from "./ecs/entity.service";
 import {NumberDisplayService} from "./number-display.service";
 import {RenderingService} from "./ecs/rendering.service";
+import {ShopComponent} from './shop/shop.component';
+import {ShopitemComponent} from './shop/shopitem/shopitem.component';
+import {ShopService} from "./shop.service";
 
 @NgModule({
   declarations: [
     MainSceneComponent,
-    AppComponent
+    AppComponent,
+    ShopComponent,
+    ShopitemComponent
   ],
   imports: [
     BrowserModule
@@ -27,7 +32,8 @@ import {RenderingService} from "./ecs/rendering.service";
     GameWorldService,
     EntityService,
     RenderingService,
-    NumberDisplayService
+    NumberDisplayService,
+    ShopService
   ],
   bootstrap: [
     AppComponent
