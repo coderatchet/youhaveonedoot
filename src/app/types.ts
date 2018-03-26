@@ -1,3 +1,5 @@
+import {ThingType} from "./unit-type";
+
 export type Primitive = string | number | boolean | null;
 export type ValidMapValue = Primitive | Function | Primitive[] | SafeNestedMap;
 
@@ -60,7 +62,7 @@ export class SafeNestedMap {
 
   private _get(key: string): ValidMapValue {
     const indexOfLastDot = key.lastIndexOf('.');
-    if(indexOfLastDot > -1) {
+    if (indexOfLastDot > -1) {
       const mapKey = key.slice(0, indexOfLastDot);
       const valueKey = key.slice(indexOfLastDot + 1);
       return this.getOrCreateMap(mapKey).get(valueKey);
@@ -99,4 +101,8 @@ export class SafeNestedMap {
   private static _validPath(key: string): boolean {
     return !!key.match(/^(?:[A-Za-z_][A-Za-z0-9_]*\.)*[A-Za-z_][A-Za-z0-9_]*$/g);
   }
+}
+
+export class Cost {
+  constructor(public thing: ThingType, public price: number) {}
 }
