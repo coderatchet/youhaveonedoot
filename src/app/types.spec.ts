@@ -3,18 +3,39 @@
 import {SafeNestedMap} from './types'
 
 describe('safeNestedMap', () => {
-  it('should behave', () => {
-    let map = new SafeNestedMap();
-    map.set('foo', 'bar');
-    console.log(`foo: ${map.get('foo')}`);
-    console.log(`baz.bar: ${map.get('baz.bar')}`);
-    console.log(`baz: ${map.get('baz').constructor.name}`);
+  let map: SafeNestedMap;
+  beforeEach(() => {
+    map = new SafeNestedMap();
   });
 
-  it('should do things and stuff', () => {
-    let map = new SafeNestedMap();
-    map.set('bar.bin.bas.boo', 123);
-    console.log(`bar.bin.bas.boo: ${map.get('bar.bin.bas.boo')}`);
+  it('should set a level one string state', () => {
+    map.set('foo', 'bar');
+    expect(map.get('foo')).toBe('bar');
+  });
+
+  it('should set a level one boolean state', () => {
+    map.set('foo', true);
+    expect(map.get('foo')).toBe(true);
+  });
+
+  it('should set a level one number state', () => {
+    map.set('foo', 1.1);
+    expect(map.get('foo')).toBe(1.1);
+  });
+
+  it('should set a level one array state', () => {
+    map.set('foo', [1.1, true, 'bar']);
+    expect(map.get('foo')).toBe([1.1, true, 'bar']);
+  });
+});
+
+describe('safeNestedMap as a Saveable', () => {
+  let map: SafeNestedMap;
+  beforeEach(() => {
+    map = new SafeNestedMap();
+  });
+
+  it('should save and load a string', () => {
   });
 });
 
