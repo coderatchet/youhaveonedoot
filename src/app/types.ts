@@ -3,6 +3,7 @@ import {Saveable} from "./saveable";
 
 export type Primitive = string | number | boolean | null;
 export type ValidMapValue = Primitive | Primitive[] | SafeNestedMap;
+const CUTOFF_LENGTH: number = 11;
 
 export class NestedTypeError extends TypeError {
   constructor(public key: string) {
@@ -103,15 +104,54 @@ export class SafeNestedMap implements Saveable<SafeNestedMap> {
     return !!key.match(/^(?:[A-Za-z_][A-Za-z0-9_]*\.)*[A-Za-z_][A-Za-z0-9_]*$/g);
   }
 
-  load(s: string): SafeNestedMap {
-    return undefined;
+  public static load(s: string): SafeNestedMap {
+    return null;
   }
 
   save(): string {
-    return "";
+    let s = "{";
+    let keysItr = this._instance.keys();
+    let keyResult = keysItr.next();
+    while (!keyResult.done) {
+      const key = keyResult.value;
+      const value = SafeNestedMap.serializeValue(this._get(key));
+      s += `${key}=${value}`;
+      keyResult = keysItr.next();
+      if(!keyResult.done) s += ',';
+    }
+    s += "}";
+    return s;
+  }
+
+  private static serializeNumber(n: number) {
+    if((n + '').length > 15) {
+      return n.toExponential(10);
+    } else {
+      return n.toString();
+    }
+  }
+
+  private static serializeValue(v: ValidMapValue): string {
+    if (v === null) return 'n';
+    if (v instanceof SafeNestedMap) return v.save();
+    if (Array.isArray(v)) {
+      return `[${v.map(SafeNestedMap.serializeValue).join(',')}]`;
+    }
+    switch (typeof v) {
+      case 'number': {
+        return `d:${SafeNestedMap.serializeNumber(v as number)}`;
+      }
+      case 'string': {
+        return `s:${v.toString().replace(/([:=[\]{}\\])/g, '\\$1')}`;
+      }
+      case 'boolean': {
+        return v ? 't' : 'f';
+      }
+    }
   }
 }
 
 export class Cost {
-  constructor(public thing: ThingType, public price: number) {}
+  constructor(public thing: ThingType, public price: number) {
+  }
 }
