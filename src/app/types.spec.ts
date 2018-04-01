@@ -37,6 +37,23 @@ describe('safeNestedMap', () => {
     map.set('foo', [1.1, true, 'bar']);
     expect(map.get('foo')).toEqual([1.1, true, 'bar']);
   });
+
+  it('should create a map if not exists', () => {
+    map.set('foo.bar', 'v');
+    let foo = map.get('foo');
+    expect(foo instanceof SafeNestedMap).toBeTruthy();
+    expect((foo as SafeNestedMap).get('bar')).toBe('v');
+  });
+
+  it('should retrieve level 2 properties', () => {
+    map.set('foo.bar', 1.1);
+    expect(map.get('foo.bar')).toBe(1.1);
+  });
+
+  it('should retrieve level 3 properties', () => {
+    map.set('foo.bar.baz', 1.1);
+    expect(map.get('foo.bar.baz')).toBe(1.1);
+  })
 });
 
 describe('safeNestedMap as a Saveable', () => {
@@ -82,6 +99,11 @@ describe('safeNestedMap as a Saveable', () => {
   it('should return {foo=[s:bar,d:1.1,t,f,n]} for array', () => {
     map.set('foo', ['bar', 1.1, true, false, null]);
     expect(map.save()).toBe('{foo=[s:bar,d:1.1,t,f,n]}');
+  });
+
+  it('should return {foo=[[d:1]]} for nested array', () => {
+    map.set('foo', [[1]]);
+    expect(map.save()).toBe('{foo=[[d:1]]}');
   });
 
   it('should return {foo=s:bar,baz=d:1.1} for multiple properties', () => {

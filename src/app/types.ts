@@ -2,8 +2,9 @@ import {ThingType} from "./unit-type";
 import {Saveable} from "./saveable";
 
 export type Primitive = string | number | boolean | null;
-export type ValidMapValue = Primitive | Primitive[] | SafeNestedMap;
-const CUTOFF_LENGTH: number = 11;
+export type ValidMapValue = Primitive | (Primitive|Primitive[])[] | SafeNestedMap;
+const CUTOFF_LENGTH: number = 15;
+const SAVE_PRECISION: number = 10;
 
 export class NestedTypeError extends TypeError {
   constructor(public key: string) {
@@ -124,8 +125,8 @@ export class SafeNestedMap implements Saveable<SafeNestedMap> {
   }
 
   private static serializeNumber(n: number) {
-    if((n + '').length > 15) {
-      return n.toExponential(10);
+    if((n + '').length > CUTOFF_LENGTH) {
+      return n.toExponential(SAVE_PRECISION);
     } else {
       return n.toString();
     }
