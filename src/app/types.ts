@@ -1,5 +1,6 @@
 import {ThingType} from "./unit-type";
 import {Saveable} from "./saveable";
+import {ParseError} from "./errors";
 
 export type Primitive = string | number | boolean | null;
 export type ValidMapValue = Primitive | (Primitive|Primitive[])[] | SafeNestedMap;
@@ -106,6 +107,21 @@ export class SafeNestedMap implements Saveable<SafeNestedMap> {
   }
 
   public static load(s: string): SafeNestedMap {
+    const startMap = s.indexOf('{');
+    if(startMap < 0) {
+      throw new ParseError('Could not find start of object to parse.');
+    } else {
+      const map = new SafeNestedMap();
+      let nextChar = startMap + 1;
+      if (s.length > nextChar) {
+        switch (s[nextChar]) {
+          case "}": {
+            return map;
+          }
+          case
+        }
+      }
+    }
     return null;
   }
 
