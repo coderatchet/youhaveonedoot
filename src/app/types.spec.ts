@@ -125,7 +125,13 @@ describe('safeNestedMap as a Saveable', () => {
 });
 
 describe('SafeNestedMap loading from a save', () => {
-  expect(SafeNestedMap.load('{}')).toEqual(new SafeNestedMap());
+  it('should load an empty map', () => {
+    expect(SafeNestedMap.load('{}')).toEqual(new SafeNestedMap());
+  });
+
+  it('should load a string property', () => {
+    expect(SafeNestedMap.load('{foo=s:bar}').get('foo')).toBe('bar');
+  });
 });
 
 //
@@ -141,4 +147,4 @@ describe('SafeNestedMap loading from a save', () => {
 //
 // ([A-Za-z_][A-Za-z0-9_]*)=((?:[tfn]|d:(?:\d+(?:\.\d+(?:e\+\d{1,3})?)?)|(.*|\\?[:\=\[\]{}\\])))(?=[^\\]?,|[^\\]?})
 //
-// \{(?:([A-Za-z_][A-Za-z0-9_]*)=((?:[tfn]|d:(?:\d+(?:\.\d+(?:e\+\d{1,3})?)?)|(.*|\\?[:\=\[\]{}\\])))(?=[^\\]?,|[^\\]?}),)*([A-Za-z_][A-Za-z0-9_]*)=((?:[tfn]|d:(?:\d+(?:\.\d+(?:e\+\d{1,3})?)?)|(.*|\\?[:\=\[\]{}\\])))(?=[^\\]?,|[^\\]?})\}
+// \{(?:([A-Za-z_][A-Za-z0-9_]*)=((?:[tfn]|d:(?:\d+(?:\.\d+(?:e\+\d{1,3})?)?)|(.*|\\?[:\=\[\]{}\\])))(?=[^\\]?,|[^\\]?}),)*([A  -Za-z_][A-Za-z0-9_]*)=((?:[tfn]|d:(?:\d+(?:\.\d+(?:e\+\d{1,3})?)?)|(.*|\\?[:\=\[\]{}\\])))(?=[^\\]?,|[^\\]?})\}

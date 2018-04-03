@@ -118,7 +118,6 @@ export class SafeNestedMap implements Saveable<SafeNestedMap> {
           case "}": {
             return map;
           }
-          case
         }
       }
     }
@@ -126,18 +125,9 @@ export class SafeNestedMap implements Saveable<SafeNestedMap> {
   }
 
   save(): string {
-    let s = "{";
-    let keysItr = this._instance.keys();
-    let keyResult = keysItr.next();
-    while (!keyResult.done) {
-      const key = keyResult.value;
-      const value = SafeNestedMap.serializeValue(this._get(key));
-      s += `${key}=${value}`;
-      keyResult = keysItr.next();
-      if(!keyResult.done) s += ',';
-    }
-    s += "}";
-    return s;
+    return JSON.stringify(this._instance, (key, value) => {
+      if (value instanceof SafeNestedMap) return value.save()
+    });
   }
 
   private static serializeNumber(n: number) {
