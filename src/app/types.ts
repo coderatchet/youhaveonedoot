@@ -1,9 +1,8 @@
 import {ThingType} from "./unit-type";
 import {Saveable} from "./saveable";
-import {ParseError} from "./errors";
 
 export type Primitive = string | number | boolean | null;
-export type ValidMapValue = Primitive | (Primitive|Primitive[])[] | SafeNestedMap;
+export type ValidMapValue = Primitive | (Primitive | Primitive[])[] | SafeNestedMap;
 const CUTOFF_LENGTH: number = 15;
 const SAVE_PRECISION: number = 10;
 
@@ -15,10 +14,12 @@ export class NestedTypeError extends TypeError {
 
 export class SafeNestedMap implements Saveable<SafeNestedMap> {
 
-  private _instance: Map<string, ValidMapValue>;
+  private _instance: {} = {};
 
-  constructor(entries?: [string, Primitive | SafeNestedMap][]) {
-    this._instance = new Map<string, ValidMapValue>(entries);
+  constructor(initialState: object = {}) {
+    for (let [key, value] of Object.entries(initialState)) {
+      this._instance[key] = value && typeof value === 'object' && !Array.isArray(value) ? new SafeNestedMap(value) : value;
+    }
   }
 
   /**
@@ -48,7 +49,7 @@ export class SafeNestedMap implements Saveable<SafeNestedMap> {
     } else {
       if (typeof map === 'undefined') {
         map = new SafeNestedMap();
-        this._instance.set(key, map);
+        this._instance[key] = map;
       } else if (!(map instanceof SafeNestedMap)) {
         throw new Error(`Expected a ${SafeNestedMap.name}, got ${map.constructor.name}`);
       }
@@ -71,7 +72,7 @@ export class SafeNestedMap implements Saveable<SafeNestedMap> {
       const valueKey = key.slice(indexOfLastDot + 1);
       return this.getOrCreateMap(mapKey).get(valueKey);
     } else {
-      return this._instance.get(key);
+      return this._instance[key];
     }
   }
 
@@ -92,7 +93,7 @@ export class SafeNestedMap implements Saveable<SafeNestedMap> {
   private _set(key: string, value: ValidMapValue): this {
     const indexOfLastDot = key.lastIndexOf('.');
     if (indexOfLastDot < 0) {
-      this._instance.set(key, value);
+      this._instance[key] = value;
       return this;
     } else {
       const mapKey = key.slice(0, indexOfLastDot);
@@ -107,31 +108,17 @@ export class SafeNestedMap implements Saveable<SafeNestedMap> {
   }
 
   public static load(s: string): SafeNestedMap {
-    const startMap = s.indexOf('{');
-    if(startMap < 0) {
-      throw new ParseError('Could not find start of object to parse.');
-    } else {
-      const map = new SafeNestedMap();
-      let nextChar = startMap + 1;
-      if (s.length > nextChar) {
-        switch (s[nextChar]) {
-          case "}": {
-            return map;
-          }
-        }
-      }
-    }
-    return null;
+    return new SafeNestedMap(JSON.parse(s));
   }
 
   save(): string {
     return JSON.stringify(this._instance, (key, value) => {
-      if (value instanceof SafeNestedMap) return value.save()
+      if (value instanceof SafeNestedMap) return value._instance; else return value;
     });
   }
 
   private static serializeNumber(n: number) {
-    if((n + '').length > CUTOFF_LENGTH) {
+    if ((n + '').length > CUTOFF_LENGTH) {
       return n.toExponential(SAVE_PRECISION);
     } else {
       return n.toString();
