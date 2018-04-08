@@ -17,8 +17,11 @@ export class SafeNestedMap implements Saveable<SafeNestedMap> {
   private _instance: {} = {};
 
   constructor(initialState: object = {}) {
+    if (initialState instanceof SafeNestedMap) return initialState;
     for (let [key, value] of Object.entries(initialState)) {
-      this._instance[key] = value && typeof value === 'object' && !Array.isArray(value) ? new SafeNestedMap(value) : value;
+      this._instance[key] = value && typeof value === 'object' && !Array.isArray(value) ?
+        ((value instanceof SafeNestedMap) ? value : new SafeNestedMap(value)) :
+        value;
     }
   }
 

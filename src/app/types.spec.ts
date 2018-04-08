@@ -53,7 +53,37 @@ describe('safeNestedMap', () => {
   it('should retrieve level 3 properties', () => {
     map.set('foo.bar.baz', 1.1);
     expect(map.get('foo.bar.baz')).toBe(1.1);
+  });
+
+  it('should construct with initial state correctly', () => {
+    const first = new SafeNestedMap({});
+    expect(first).toEqual(new SafeNestedMap());
+  });
+
+  it('should construct with initial state with nested object', () => {
+    const first = new SafeNestedMap({foo: {}});
+    expect(first.get('foo')).toEqual(new SafeNestedMap());
+  });
+
+  it('should construct with initial state of another SafeNestedMap', () => {
+    const first = new SafeNestedMap(new SafeNestedMap());
+    expect(first).toEqual(new SafeNestedMap());
+  });
+
+  it('should construct with nested SafeNestedMap', () => {
+    const child = new SafeNestedMap({foo: 1});
+    const parent = new SafeNestedMap({baz: child});
+    expect(parent.get('baz')).toBe(child);
   })
+
+  it('should initialize with values', () => {
+    expect(new SafeNestedMap({foo: 1}).get('foo')).toBe(1);
+    expect(new SafeNestedMap({foo: 'bar'}).get('foo')).toBe('bar');
+    expect(new SafeNestedMap({foo: true}).get('foo')).toBe(true);
+    expect(new SafeNestedMap({foo: false}).get('foo')).toBe(false);
+    expect(new SafeNestedMap({foo: null}).get('foo')).toBe(null);
+    expect(new SafeNestedMap({foo: [1, 'bar', true, false, null]}).get('foo')).toEqual([1, 'bar', true, false, null]);
+  });
 });
 
 describe('safeNestedMap as a Saveable', () => {
