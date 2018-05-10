@@ -17,4 +17,8 @@ export class ShopComponent implements OnInit {
     this.shopItems = this.shopService.getShopItems();
   }
 
+  buy() {
+    console.debug("clicked buy");
+  }
+
 }

@@ -1,3 +1,6 @@
 <div *ngFor="let item of shopItems" id="shop">
+  <div>
+    <button class="doot button-buy" (click)="buy()">Buy</button>
     <p>{{item.thing.name}}</p>
+  </div>
 </div>
